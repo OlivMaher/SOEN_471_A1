@@ -15,6 +15,8 @@ print(df['Payment_Method'].unique())
 print(df['Preferred_Content_Type'].unique())
 # Data set looks good no missing values
 
+# Save the cleaned dataset
+df.to_csv("./customer_churn_cleaned.csv", index=False)
 
 # Exploratory data analysis
 df = df.drop(['CustomerID'], axis=1)
