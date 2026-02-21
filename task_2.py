@@ -38,7 +38,7 @@ clf = Pipeline(steps=[
 ])
 
 param_grid = {
-    "model__max_depth": [3, 5, 7, 10],
+    "model__max_depth": [3,4,5, 6,7, 10],
     "model__min_samples_split": [2, 5, 10],
     "model__min_samples_leaf": [1, 2, 4]
 }
