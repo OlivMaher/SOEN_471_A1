@@ -1,34 +1,33 @@
 Random Forest Classifier Results
               precision    recall  f1-score   support
 
-           0       0.65      0.37      0.47        41
-           1       0.85      0.95      0.90       159
+           0       0.60      0.37      0.45        41
+           1       0.85      0.94      0.89       159
 
-    accuracy                           0.83       200
-   macro avg       0.75      0.66      0.68       200
-weighted avg       0.81      0.83      0.81       200
+    accuracy                           0.82       200
+   macro avg       0.73      0.65      0.67       200
+weighted avg       0.80      0.82      0.80       200
 
-Accuracy: 0.83
-Precision: 0.8531073446327684
-Recall: 0.949685534591195
-F1 Score: 0.8988095238095238
+Accuracy: 0.82
+Precision: 0.8514285714285714
+Recall: 0.9371069182389937
+F1 Score: 0.8922155688622755
 
 Feature Importances:
                              Feature  Importance
-           num__Number_of_Complaints    0.172868
-               num__Watch_Time_Hours    0.114552
-           num__Resolution_Time_Days    0.106796
-                     num__CustomerID    0.099634
-     num__Subscription_Length_Months    0.097388
-                            num__Age    0.090586
-               num__Number_of_Logins    0.088679
-        cat__Membership_Type_Premium    0.060414
-                 num__Payment_Issues    0.055278
-          cat__Membership_Type_Basic    0.020623
-          cat__Payment_Method_PayPal    0.016254
-       cat__Membership_Type_Standard    0.014552
-cat__Preferred_Content_Type_TV Shows    0.014204
-           cat__Payment_Method_Debit    0.012573
-  cat__Preferred_Content_Type_Movies    0.012046
-  cat__Preferred_Content_Type_Sports    0.011932
-     cat__Payment_Method_Credit Card    0.011621
+           num__Number_of_Complaints    0.184900
+               num__Watch_Time_Hours    0.134137
+           num__Resolution_Time_Days    0.116920
+     num__Subscription_Length_Months    0.116593
+               num__Number_of_Logins    0.103284
+                            num__Age    0.102574
+        cat__Membership_Type_Premium    0.067418
+                 num__Payment_Issues    0.054875
+          cat__Membership_Type_Basic    0.019125
+          cat__Payment_Method_PayPal    0.016172
+cat__Preferred_Content_Type_TV Shows    0.015652
+           cat__Payment_Method_Debit    0.015108
+       cat__Membership_Type_Standard    0.013711
+  cat__Preferred_Content_Type_Movies    0.013702
+     cat__Payment_Method_Credit Card    0.013335
+  cat__Preferred_Content_Type_Sports    0.012493

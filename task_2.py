@@ -8,16 +8,12 @@ from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
 import matplotlib.pyplot as plt
 
-
 df = pd.read_csv("customer_churn_cleaned.csv")
 target_key = "Churn"
-if target_key not in df.columns:
-    raise ValueError(f"Target key '{target_key}' not found in the dataset.")
-
-X = df.drop(columns=[target_key]) # churn is our target variable
+df.drop(columns=["CustomerID"], inplace=True)
+X = df.drop(columns=[target_key])
 y = df[target_key]
 
-# Split
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
@@ -32,31 +28,29 @@ preprocess = ColumnTransformer(
     ]
 )
 
-clf = Pipeline(steps=[
+pipeline = Pipeline(steps=[
     ("preprocess", preprocess),
     ("model", DecisionTreeClassifier(random_state=42))
 ])
 
 param_grid = {
-    "model__max_depth": [3,4,5, 6,7, 10],
-    "model__min_samples_split": [2, 5, 10],
-    "model__min_samples_leaf": [1, 2, 4]
+    "model__max_depth": [3, 4, 5, 6, 7, 10],
+    "model__min_samples_split": [2, 5, 6, 7, 8, 9, 10],
+    "model__min_samples_leaf": [1, 2, 3, 4]
 }
-
-grid = GridSearchCV(clf, param_grid=param_grid, cv=5, scoring="accuracy", n_jobs=1)
+print("---Starting Grid Search with Decision Tree Classifier...")
+grid = GridSearchCV(pipeline, param_grid=param_grid, cv=5, scoring="accuracy")
 grid.fit(X_train, y_train)
 
 best_model = grid.best_estimator_
 
 print("Best Cross-Validation Accuracy:", grid.best_score_)
 print("Best Hyperparameters:", grid.best_params_)
-
 best_model.fit(X_train, y_train)
 
-# Predict + Evaluate
 y_pred = best_model.predict(X_test)
 
-plt.figure(figsize=(50, 10))
+plt.figure(figsize=(30, 10))
 feature_names = best_model.named_steps["preprocess"].get_feature_names_out()
 plot_tree(
     best_model.named_steps["model"],
@@ -67,10 +61,10 @@ plot_tree(
     max_depth=5,
     fontsize=10,
     impurity=False,      # hides gini/entropy
-    proportion=True,     # show proportions instead of raw counts (optional)
-    label="none",        # removes "gini = ..." style labels line; keeps split text
+    proportion=True,     # show proportions instead of raw counts
+    label="none",        # removes "gini = ..."
 )
-plt.savefig("figures/decision_tree_scaled.png", bbox_inches="tight", dpi=300)
+plt.savefig("figures/decision_tree_scaled.png", bbox_inches="tight")
 plt.savefig("figures/decision_tree.png")
 plt.show()
 
@@ -84,7 +78,6 @@ print("F1 Score:", f1)
 print("Recall Score:", recall)
 cm = confusion_matrix(y_test, y_pred)  # use labels=... if you want fixed order
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=best_model.classes_)
-
 disp.plot(values_format="d")
 plt.savefig("figures/confusion_matrix.png")
 plt.show()

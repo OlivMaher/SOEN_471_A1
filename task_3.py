@@ -5,34 +5,25 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.pipeline import Pipeline
-from sklearn.model_selection import GridSearchCV
 import matplotlib.pyplot as plt
 
-
+#Setup exactly same as for task 2
 df = pd.read_csv("customer_churn_cleaned.csv")
 target_key = "Churn"
-if target_key not in df.columns:
-    raise ValueError(f"Target key '{target_key}' not found in the dataset.")
-
+df.drop(columns=["CustomerID"], inplace=True)
 X = df.drop(columns=[target_key]) # churn is our target variable
 y = df[target_key]
-
-# Split
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
-
 cat_cols = X.select_dtypes(include=["object", "category"]).columns
 num_cols = X.columns.difference(cat_cols)
-
 preprocess = ColumnTransformer(
     transformers=[
         ("cat", OneHotEncoder(handle_unknown="ignore"), cat_cols),
         ("num", "passthrough", num_cols),
     ]
 )
-
-
 clf = Pipeline(steps=[
     ("preprocess", preprocess),
     ("model", RandomForestClassifier(random_state=42))
@@ -49,10 +40,6 @@ feature_importance_df = pd.DataFrame({
     "Feature": feature_names,
     "Importance": importances
 }).sort_values(by="Importance", ascending=False)
-
-
-
-
 
 print(classification_report(y_test, predictions))
 print("Accuracy:", accuracy_score(y_test, predictions))
