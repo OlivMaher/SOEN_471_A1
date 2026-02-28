@@ -5,16 +5,15 @@ import seaborn as sns
 df = pd.read_csv("./customer_churn.csv")
 
 print("Structure: ", df.shape)
-
 print("Summary Statistics: \n", df.describe())
 
 # Identify and handle missing data
 print(df.isna().sum())
+print("Negative values: ", sum([i for i in df if i.isnumeric() and i < 0]))
 print(df['Membership_Type'].unique())
 print(df['Payment_Method'].unique())
 print(df['Preferred_Content_Type'].unique())
-# Data set looks good no missing values
-
+# Data set looks good no missing values or negative values
 # Save the cleaned dataset
 df.to_csv("./customer_churn_cleaned.csv", index=False)
 
@@ -33,12 +32,16 @@ numerical_cols = [
     "Resolution_Time_Days"
 ]
 
-for col in numerical_cols:
-    df.boxplot(column=col, by='Churn')
-    plt.suptitle("")
-    plt.title(f"{col} By Churn")
-    plt.ylabel(col)
-    plt.show()
+fig, axes = plt.subplots(2, 3, figsize=(15, 8))  
+axes = axes.flatten()
+
+for i, col in enumerate(numerical_cols):
+    df.boxplot(column=col, by='Churn', ax=axes[i])
+    axes[i].set_title(col)
+
+plt.suptitle("") 
+plt.tight_layout()
+plt.show()
 
 correlation = df.corr(numeric_only=True)
 plt.figure(figsize=(8,8))
